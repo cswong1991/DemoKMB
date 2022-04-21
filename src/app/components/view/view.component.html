@@ -1,0 +1,23 @@
+<mat-toolbar>
+    <span>{{QPs['route'] +
+        (routeDetail?.['basicInfo']?.['ServiceTypeTC']? ' (' + routeDetail['basicInfo']['ServiceTypeTC'] + ')':
+        "")}}</span>
+</mat-toolbar>
+
+<mat-tab-group selectedIndex=1>
+    <mat-tab label="最新消息">
+        <ng-template matTabContent>
+            <app-announcement [QPs]="QPs"></app-announcement>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="到站時間">
+        <ng-template matTabContent>
+            <app-stop-list [QPs]="QPs" [dataSource]="dataSource"></app-stop-list>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="轉乘優惠">
+        <ng-template matTabContent>
+            <app-bbi [QPs]="QPs"></app-bbi>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>

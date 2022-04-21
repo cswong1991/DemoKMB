@@ -1,0 +1,46 @@
+<mat-form-field class="w-100" appearance="standard">
+    <mat-label>Route Search</mat-label>
+    <input matInput #routeSearch [matAutocomplete]="auto" (keyup.enter)="applyFilter(routeSearch.value)">
+    <button *ngIf="routeSearch.value != ''" matSuffix mat-icon-button (click)="routeSearch.value = ''">
+        <mat-icon>close</mat-icon>
+    </button>
+    <button matSuffix mat-stroked-button (click)="applyFilter(routeSearch.value)">
+        Search
+    </button>
+    <button matSuffix mat-stroked-button (click)="removeAllHistory()">
+        Clear History
+    </button>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="applyFilter(routeSearch.value)">
+        <mat-option *ngFor="let option of genSHOpts(routeSearch.value); let i=index;" [value]="option">
+            {{option}}
+            <button mat-icon-button (click)="removeHistory(i)">
+                <mat-icon>cancel</mat-icon>
+            </button>
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>
+
+<table class="w-100" mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="route">
+        <th mat-header-cell *matHeaderCellDef>路線</th>
+        <td mat-cell *matCellDef="let element">
+            <a routerLink="/view" target="_blank"
+                [queryParams]="{route:element.route, bound:element.bound,service_type:element.service_type}">
+                {{element.route + ' ' + (element.service_type != '1'? '特別班次': '')}}
+            </a>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="orig_tc">
+        <th mat-header-cell *matHeaderCellDef>起點站</th>
+        <td mat-cell *matCellDef="let element"> {{element.orig_tc}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dest_tc">
+        <th mat-header-cell *matHeaderCellDef>終點站</th>
+        <td mat-cell *matCellDef="let element"> {{element.dest_tc}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
